@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Persistence.Configuration
@@ -19,6 +20,15 @@ namespace Persistence.Configuration
                 var logger = services.GetRequiredService<ILogger<DataContext>>();
                 logger.LogError(ex, "Error applying migrations to database");
             }
+
+        }
+
+        public static void AddDataContext(this IServiceCollection serviceCollection, IConfiguration builderConfiguration)
+        {
+            serviceCollection.AddDbContext<DataContext>(opts =>
+            {
+                opts.UseSqlite(builderConfiguration.GetConnectionString("DefaultConnection"));
+            });
 
         }
     }
