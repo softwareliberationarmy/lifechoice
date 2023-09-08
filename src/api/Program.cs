@@ -1,4 +1,6 @@
+using Application.Core;
 using Application.WeighIn;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Persistence.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +23,7 @@ builder.Services.AddCors(opt =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(List.Query)));
-
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(MappingProfiles).Assembly));
 
 var app = builder.Build();
 
