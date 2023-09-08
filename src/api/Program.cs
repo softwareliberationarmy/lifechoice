@@ -1,3 +1,4 @@
+using Application.Configuration;
 using Application.Core;
 using Application.WeighIn;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,7 +14,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDataContext(builder.Configuration);
-
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("Development", policy =>
@@ -21,9 +21,7 @@ builder.Services.AddCors(opt =>
         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3030");
     });
 });
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(List.Query)));
-builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(MappingProfiles).Assembly));
+builder.Services.ConfigureApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
