@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using Application.WeighIn;
+using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -7,16 +9,23 @@ namespace api.Controllers
 {
     public class WeighInController : BaseApiController
     {
-        private readonly DataContext _context;
-        public WeighInController(DataContext context)
+        private readonly IMediator _mediator;
+
+        public WeighInController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<WeighIn>>> Get()
         {
-            return await _context.WeighIns.ToListAsync();
+            return await _mediator.Send(new List.Query());
         }
+
+        //[HttpGet("{date}")]
+        //public async Task<ActionResult<WeighIn>> GetByDate(DateOnly date)
+        //{
+
+        //}
     }
 }
