@@ -36,7 +36,11 @@ export const WeighInList = ({ weighIns }: Props) => {
                       <Statistic.Label>% muscle</Statistic.Label>
                     </Statistic>
                   </Statistic.Group>
-                  <Statistic.Group size="mini" widths="three">
+                  <Statistic.Group
+                    style={{ marginTop: '1em' }}
+                    size="mini"
+                    widths="three"
+                  >
                     <Statistic data-testid="metric">
                       <Statistic.Value>
                         {wi.restingMetabolismCalories}

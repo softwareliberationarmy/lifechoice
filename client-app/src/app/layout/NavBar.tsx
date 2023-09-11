@@ -6,7 +6,7 @@ interface Props {
 
 export const NavBar = ({ onCreateNew }: Props) => {
   return (
-    <Menu inverted as="nav">
+    <Menu inverted as="nav" fixed="top">
       <Menu.Item
         as="h2"
         icon="heartbeat"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavBar } from './NavBar';
 import { WeighInList } from '../../features/weigh-ins/WeighInList';
+import { Container } from 'semantic-ui-react';
 
 function App() {
   const [weighIns, setWeighIns] = useState([]);
@@ -15,7 +16,9 @@ function App() {
   return (
     <>
       <NavBar onCreateNew={() => {}} />
-      <WeighInList weighIns={weighIns} />
+      <Container style={{ marginTop: '7em' }}>
+        <WeighInList weighIns={weighIns} />
+      </Container>
     </>
   );
 }
