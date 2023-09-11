@@ -1,29 +1,30 @@
-import { Header, List, ListItem } from 'semantic-ui-react'
-import './App.css'
+import { Header, List, ListItem } from 'semantic-ui-react';
+import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { WeighIn } from './app/model/WeighIn';
 
 function App() {
-
-  const [weighIns, setWeighIns] = useState([]) ;
+  const [weighIns, setWeighIns] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5050/api/weighin')
-    .then(response => setWeighIns(response.data));
+    axios
+      .get('http://localhost:5001/api/weighin')
+      .then((response) => setWeighIns(response.data));
   }, []);
 
   return (
     <div>
-    <Header as='h2' icon='heartbeat' content='Life Choice' />
-    <List>
-      { weighIns.map((wi: any) => (
-        <ListItem key={wi.id}>
-          {wi.date} - {wi.weight} lbs
-        </ListItem>
-      ))}
-    </List>
+      <Header as="h2" icon="heartbeat" content="Life Choice" />
+      <List>
+        {weighIns.map((wi: WeighIn) => (
+          <ListItem key={wi.id}>
+            {wi.date} - {wi.weight} lbs
+          </ListItem>
+        ))}
+      </List>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
