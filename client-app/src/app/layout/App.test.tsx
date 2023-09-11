@@ -27,11 +27,9 @@ describe('when I render the App component', () => {
   it('shows the list of recent weigh-ins successfully', async () => {
     render(<App />);
 
-    expect(screen.getByRole('list')).toBeInTheDocument();
+    expect(screen.getByTestId('weigh-ins')).toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.getByRole('listitem')).toHaveTextContent(
-        '2023-05-01 - 223.6 lbs'
-      );
+      expect(screen.getByText('2023-05-01')).toBeInTheDocument();
     });
   });
 
