@@ -4,17 +4,17 @@ import { NavBar } from './NavBar';
 
 describe('when I render the NavBar', () => {
   it('has a navigation role', () => {
-    render(<NavBar />);
+    render(<NavBar onCreateNew={() => {}} />);
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
   it('displays the Life Choice app name', () => {
-    render(<NavBar />);
+    render(<NavBar onCreateNew={() => {}} />);
     expect(screen.getByText('Life Choice')).toBeInTheDocument();
   });
 
   it('shows a Create Weigh In button', () => {
-    render(<NavBar />);
+    render(<NavBar onCreateNew={() => {}} />);
     expect(screen.getByRole('button')).toHaveTextContent('Create Weigh In');
   });
 
