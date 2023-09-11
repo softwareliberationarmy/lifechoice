@@ -1,8 +1,7 @@
-import { List, ListItem } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { WeighIn } from '../model/WeighIn';
 import { NavBar } from './NavBar';
+import { WeighInList } from '../../features/weigh-ins/WeighInList';
 
 function App() {
   const [weighIns, setWeighIns] = useState([]);
@@ -16,13 +15,7 @@ function App() {
   return (
     <>
       <NavBar onCreateNew={() => {}} />
-      <List>
-        {weighIns.map((wi: WeighIn) => (
-          <ListItem key={wi.id}>
-            {wi.date} - {wi.weight} lbs
-          </ListItem>
-        ))}
-      </List>
+      <WeighInList weighIns={weighIns} />
     </>
   );
 }
