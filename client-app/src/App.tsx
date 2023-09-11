@@ -1,5 +1,4 @@
 import { Header, List, ListItem } from 'semantic-ui-react';
-import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { WeighIn } from './app/model/WeighIn';
@@ -14,7 +13,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <>
       <Header as="h2" icon="heartbeat" content="Life Choice" />
       <List>
         {weighIns.map((wi: WeighIn) => (
@@ -23,7 +22,7 @@ function App() {
           </ListItem>
         ))}
       </List>
-    </div>
+    </>
   );
 }
 
