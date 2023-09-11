@@ -1,8 +1,8 @@
 import { List, ListItem } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { WeighIn } from './app/model/WeighIn';
-import { NavBar } from './app/layout/NavBar';
+import { WeighIn } from '../model/WeighIn';
+import { NavBar } from './NavBar';
 
 function App() {
   const [weighIns, setWeighIns] = useState([]);
