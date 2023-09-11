@@ -6,6 +6,12 @@ describe('when I render the App component', () => {
   it('renders header successfully', () => {
     render(<App />);
 
-    expect(screen.queryByText('Life Choice')).toBeInTheDocument();
+    expect(screen.getByText('Life Choice')).toBeInTheDocument();
+  });
+
+  it('shows the list of recent weigh-ins successfully', () => {
+    render(<App />);
+
+    expect(screen.getByRole('list')).toBeInTheDocument();
   });
 });
