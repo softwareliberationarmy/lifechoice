@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { WeighInModal } from '../WeighInModal';
+import { WeighInModal } from './WeighInModal';
 import { WeighIn } from '../../app/model/WeighIn';
 import userEvent from '@testing-library/user-event';
 
@@ -191,9 +191,7 @@ describe('WeighInModal: modal for creating a new weigh-in', () => {
       const user = userEvent.setup();
 
       //find the input value for weight and type in a new value
-      await user.click(
-        screen.getByPlaceholderText<HTMLInputElement>('Date')
-      );
+      await user.click(screen.getByPlaceholderText<HTMLInputElement>('Date'));
       await user.keyboard('2021-01-01');
 
       await user.click(screen.getByText('Submit'));
@@ -201,6 +199,5 @@ describe('WeighInModal: modal for creating a new weigh-in', () => {
       //expect the weighIn object to have the new value
       expect(weighIn.date).toBe('2021-01-01');
     });
-
   });
 });

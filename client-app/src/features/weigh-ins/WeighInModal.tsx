@@ -1,5 +1,5 @@
 import { Button, Form, Modal } from 'semantic-ui-react';
-import { WeighIn } from '../app/model/WeighIn';
+import { WeighIn } from '../../app/model/WeighIn';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 interface Props {
@@ -45,9 +45,13 @@ export const WeighInModal = ({ open, onCancel, onSubmit }: Props) => {
       <Modal.Header>New Weigh In</Modal.Header>
       <Modal.Content>
         <Form as="form">
-          <Form.Input label="Date" value={weighIn.date} placeholder="Date"
-          onChange={handleInputChange}
-          name="date"  />
+          <Form.Input
+            label="Date"
+            value={weighIn.date}
+            placeholder="Date"
+            onChange={handleInputChange}
+            name="date"
+          />
           <Form.Input
             label="Weight"
             value={weighIn.weight}

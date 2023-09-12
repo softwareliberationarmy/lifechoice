@@ -4,7 +4,7 @@ import { NavBar } from './NavBar';
 import { WeighInList } from '../../features/weigh-ins/WeighInList';
 import { Container } from 'semantic-ui-react';
 import { WeighIn } from '../model/WeighIn';
-import { WeighInModal } from '../../features/WeighInModal';
+import { WeighInModal } from '../../features/weigh-ins/WeighInModal';
 
 function App() {
   const [weighIns, setWeighIns] = useState<WeighIn[]>([]);
