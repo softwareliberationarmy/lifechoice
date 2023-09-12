@@ -72,7 +72,6 @@ describe('the App component', () => {
 
       await user.click(screen.getByText('Submit'));
 
-      screen.debug();
       expect(screen.queryByText('New Weigh In')).not.toBeInTheDocument();
       expect(screen.getAllByTestId('weigh-in')).toHaveLength(2);
     });
