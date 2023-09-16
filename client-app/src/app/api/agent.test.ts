@@ -6,6 +6,12 @@ import agent from './agent.ts';
 vi.mock('axios');
 
 describe('api communication', () => {
+  describe('configuration', () => {
+    it('sets the base url for axios', () => {
+      expect(axios.defaults.baseURL).toBe('http://localhost:5001/api');
+    });
+  });
+
   describe('weigh-ins', () => {
     const expected: WeighIn = {
       id: 1,
@@ -27,9 +33,7 @@ describe('api communication', () => {
       const result = await agent.WeighIns.getAll();
 
       expect(result[0]).toEqual(expected);
-      expect(axios.get).toHaveBeenCalledWith(
-        'http://localhost:5001/api/weighin'
-      );
+      expect(axios.get).toHaveBeenCalledWith('/weighin');
     });
 
     it('returns a single weigh in by ID', async () => {
@@ -40,9 +44,7 @@ describe('api communication', () => {
       const result = await agent.WeighIns.getById(expected.id);
 
       expect(result).toEqual(expected);
-      expect(axios.get).toHaveBeenCalledWith(
-        `http://localhost:5001/api/weighin/${expected.id}`
-      );
+      expect(axios.get).toHaveBeenCalledWith(`/weighin/${expected.id}`);
     });
 
     it('creates a new weigh in', async () => {
@@ -54,10 +56,7 @@ describe('api communication', () => {
 
       const result = await agent.WeighIns.create(expected);
 
-      expect(axios.post).toHaveBeenCalledWith(
-        'http://localhost:5001/api/weighin',
-        expected
-      );
+      expect(axios.post).toHaveBeenCalledWith('/weighin', expected);
       expect(result).toBe(expectedResponseData);
     });
   });
