@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { NavBar } from './NavBar';
 import { WeighInList } from '../../features/weigh-ins/WeighInList';
 import { Container } from 'semantic-ui-react';
 import { WeighIn } from '../model/WeighIn';
 import { WeighInModal } from '../../features/weigh-ins/WeighInModal';
+import agent from '../api/agent';
 
 function App() {
   const [weighIns, setWeighIns] = useState<WeighIn[]>([]);
@@ -24,9 +24,7 @@ function App() {
   }
 
   useEffect(() => {
-    axios
-      .get<WeighIn[]>('http://localhost:5001/api/weighin')
-      .then((response) => setWeighIns(response.data));
+    agent.WeighIns.getAll().then((weighIns) => setWeighIns(weighIns));
   }, []);
 
   return (

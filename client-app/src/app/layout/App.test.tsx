@@ -1,24 +1,29 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 import { describe, it, expect, vitest, beforeEach } from 'vitest';
-import axios from 'axios';
+import agent from '../api/agent';
 import userEvent from '@testing-library/user-event';
+import { WeighIn } from '../model/WeighIn';
 
-vitest.mock('axios');
+vitest.mock('../api/agent');
 
-const mockWeighIns = [
+const mockWeighIns: WeighIn[] = [
   {
     id: 1,
     date: '2023-05-01',
     weight: 223.6,
+    bmi: 1,
+    bodyAge: 1,
+    bodyFatPercent: 1,
+    musclePercent: 1,
+    restingMetabolismCalories: 1,
+    visceralFat: 1,
   },
 ];
 
 describe('the App component', () => {
   beforeEach(() => {
-    vitest.mocked(axios.get).mockResolvedValue({
-      data: mockWeighIns,
-    });
+    vitest.mocked(agent.WeighIns.getAll).mockResolvedValue(mockWeighIns);
 
     render(<App />);
   });
