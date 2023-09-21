@@ -1,40 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { NavBar } from './NavBar';
 import { WeighInList } from '../../features/weigh-ins/WeighInList';
 import { Container } from 'semantic-ui-react';
 import { WeighIn } from '../model/WeighIn';
-import { WeighInModal } from '../../features/weigh-ins/WeighInModal';
+import WeighInModal from '../../features/weigh-ins/WeighInModal';
 import { useStore } from '../store/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
-
   const { weighInStore } = useStore();
-  const [showModal, setShowModal] = useState(false);
 
   function requestNewWeighIn() {
-    setShowModal(true);
+    weighInStore.setCreateMode(true);
   }
 
   function cancelNewWeighIn() {
-    setShowModal(false);
+    weighInStore.setCreateMode(false);
   }
 
   function createNewWeighIn(wi: WeighIn) {
     weighInStore.addWeighIn(wi);
-    setShowModal(false);
   }
 
   useEffect(() => {
     weighInStore.loadWeighIns();
-  }, []);
+  }, [weighInStore]);
 
   return (
     <>
-      <WeighInModal
-        open={showModal}
-        onCancel={cancelNewWeighIn}
-        onSubmit={createNewWeighIn}
-      />
+      <WeighInModal onCancel={cancelNewWeighIn} onSubmit={createNewWeighIn} />
       <NavBar onCreateNew={requestNewWeighIn} />
       <Container style={{ marginTop: '7em' }}>
         <WeighInList />
@@ -43,4 +37,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

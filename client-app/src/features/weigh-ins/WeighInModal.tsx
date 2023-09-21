@@ -1,14 +1,18 @@
 import { Button, Form, Modal } from 'semantic-ui-react';
 import { WeighIn } from '../../app/model/WeighIn';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useStore } from '../../app/store/store';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
-  open: boolean;
   onCancel: () => void;
   onSubmit: (wi: WeighIn) => void;
 }
 
-export const WeighInModal = ({ open, onCancel, onSubmit }: Props) => {
+const WeighInModal = ({ onCancel, onSubmit }: Props) => {
+  const { weighInStore } = useStore();
+  const { createMode } = weighInStore;
+
   function newWeighIn(): WeighIn {
     return {
       id: 0,
@@ -28,7 +32,7 @@ export const WeighInModal = ({ open, onCancel, onSubmit }: Props) => {
   //re-initialize the weigh-in every time the open prop changes
   useEffect(() => {
     setWeighIn(newWeighIn());
-  }, [open]);
+  }, [createMode]);
 
   function handleNumericInputChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -41,7 +45,7 @@ export const WeighInModal = ({ open, onCancel, onSubmit }: Props) => {
   }
 
   return (
-    <Modal data-testid="weigh-in-modal" open={open}>
+    <Modal data-testid="weigh-in-modal" open={createMode}>
       <Modal.Header>New Weigh In</Modal.Header>
       <Modal.Content>
         <Form as="form">
@@ -121,3 +125,5 @@ export const WeighInModal = ({ open, onCancel, onSubmit }: Props) => {
     </Modal>
   );
 };
+
+export default observer(WeighInModal);

@@ -1,8 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { WeighInModal } from './WeighInModal';
+import WeighInModal from './WeighInModal';
 import { WeighIn } from '../../app/model/WeighIn';
 import userEvent from '@testing-library/user-event';
+import { Store, useStore as storeHook } from '../../app/store/store';
+import WeighInStore from '../../app/store/weighInStore';
+
+const useStore = storeHook as ReturnType<typeof vi.fn>;
+vi.mock('../../app/store/store');
 
 interface ModalTestInputs {
   shouldOpen?: boolean;
@@ -10,14 +15,25 @@ interface ModalTestInputs {
   submitAction?: (wi: WeighIn) => void;
 }
 
+const stubWeighInStore = () => {
+  const store: Store = {
+    weighInStore: new WeighInStore(),
+  };
+
+  return store;
+};
+
 const whenIRenderTheWeighInModal = ({
   shouldOpen,
   cancelAction,
   submitAction,
 }: ModalTestInputs) => {
+  const store = stubWeighInStore();
+  store.weighInStore.setCreateMode(shouldOpen ?? true);
+  useStore.mockReturnValue(store);
+
   render(
     <WeighInModal
-      open={shouldOpen ?? true}
       onCancel={cancelAction ?? vi.fn()}
       onSubmit={submitAction ?? vi.fn()}
     />
@@ -25,6 +41,8 @@ const whenIRenderTheWeighInModal = ({
 };
 
 describe('WeighInModal: modal for creating a new weigh-in', () => {
+  beforeEach(() => {});
+
   describe('when weigh-in modal is created', () => {
     it('should be closed by default', () => {
       whenIRenderTheWeighInModal({ shouldOpen: false });
