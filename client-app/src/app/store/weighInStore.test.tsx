@@ -46,6 +46,9 @@ describe('weigh in Mobx store', () => {
 
     expect(store.weighIns.length).toBe(1);
 
+    store.setCreateMode(true);
+    expect(store.createMode).toBe(true);
+
     const newWeighIn = { date: '2023-09-01', weight: 205 } as WeighIn;
     vi.mocked(agent.WeighIns.getAll).mockResolvedValue([expected, newWeighIn]);
 
@@ -53,6 +56,15 @@ describe('weigh in Mobx store', () => {
 
     await waitFor(() => {
       expect(store.weighIns.length).toBe(2);
+      expect(store.createMode).toBe(false);
     });
+  });
+
+  it('sets createMode to add a new weigh-in', () => {
+    const store = new WeighInStore();
+    store.setCreateMode(true);
+    expect(store.createMode).toBe(true);
+    store.setCreateMode(false);
+    expect(store.createMode).toBe(false);
   });
 });

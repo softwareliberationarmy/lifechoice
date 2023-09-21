@@ -4,6 +4,7 @@ import agent from '../api/agent';
 
 export default class WeighInStore {
   weighIns = Array.of<WeighIn>();
+  createMode = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -16,5 +17,10 @@ export default class WeighInStore {
   addWeighIn = async (wi: WeighIn) => {
     await agent.WeighIns.create(wi);
     this.loadWeighIns();
+    this.setCreateMode(false);
+  };
+
+  setCreateMode = (mode: boolean) => {
+    this.createMode = mode;
   };
 }
