@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 import { describe, it, expect, vitest, beforeEach } from 'vitest';
 import agent from '../api/agent';
@@ -74,11 +74,24 @@ describe('the App component', () => {
 
       await user.click(screen.getByPlaceholderText<HTMLInputElement>('Weight'));
       await user.keyboard('200.1');
+      await user.click(screen.getByPlaceholderText<HTMLInputElement>('Date'));
+      await user.keyboard('2023-05-01');
 
-      await user.click(screen.getByText('Submit'));
+      vitest
+        .mocked(agent.WeighIns.getAll)
+        .mockResolvedValue([
+          ...mockWeighIns,
+          { id: 27, date: '2023-05-01', weight: 200.1 } as WeighIn,
+        ]);
 
-      expect(screen.queryByText('New Weigh In')).not.toBeInTheDocument();
-      expect(screen.getAllByTestId('weigh-in')).toHaveLength(2);
+      act(() => {
+        user.click(screen.getByText('Submit'));
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText('New Weigh In')).not.toBeInTheDocument();
+        expect(screen.getAllByTestId('weigh-in')).toHaveLength(2);
+      });
     });
   });
 });

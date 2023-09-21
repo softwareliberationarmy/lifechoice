@@ -9,7 +9,6 @@ import { useStore } from '../store/store';
 function App() {
 
   const { weighInStore } = useStore();
-  const [weighIns, setWeighIns] = useState<WeighIn[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   function requestNewWeighIn() {
@@ -21,13 +20,12 @@ function App() {
   }
 
   function createNewWeighIn(wi: WeighIn) {
-    setWeighIns([...weighIns, wi]);
+    weighInStore.addWeighIn(wi);
     setShowModal(false);
   }
 
   useEffect(() => {
     weighInStore.loadWeighIns();
-    // agent.WeighIns.getAll().then((weighIns) => setWeighIns(weighIns));
   }, []);
 
   return (

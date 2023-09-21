@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { describe, expect, it, vi } from 'vitest';
 import WeighInStore from './weighInStore';
-import { waitFor } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { WeighIn } from '../model/WeighIn';
 import agent from '../api/agent';
 
@@ -34,5 +34,25 @@ describe('weigh in Mobx store', () => {
     await store.loadWeighIns();
 
     expect(store.weighIns[0]).toBe(expected);
+  });
+
+  it('creates a new weigh-in on the server and locally', async () => {
+    const expected = { id: 1, date: '2023-05-01', weight: 223.6 } as WeighIn;
+    vi.mocked(agent.WeighIns.getAll).mockResolvedValue([expected]);
+    vi.mocked(agent.WeighIns.create);
+
+    const store = new WeighInStore();
+    await store.loadWeighIns();
+
+    expect(store.weighIns.length).toBe(1);
+
+    const newWeighIn = { date: '2023-09-01', weight: 205 } as WeighIn;
+    vi.mocked(agent.WeighIns.getAll).mockResolvedValue([expected, newWeighIn]);
+
+    await act(async () => await store.addWeighIn(newWeighIn));
+
+    await waitFor(() => {
+      expect(store.weighIns.length).toBe(2);
+    });
   });
 });

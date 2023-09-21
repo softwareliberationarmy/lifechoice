@@ -9,7 +9,12 @@ export default class WeighInStore {
     makeAutoObservable(this);
   }
 
-  async loadWeighIns() {
+  loadWeighIns = async () => {
     this.weighIns = await agent.WeighIns.getAll();
-  }
+  };
+
+  addWeighIn = async (wi: WeighIn) => {
+    await agent.WeighIns.create(wi);
+    this.loadWeighIns();
+  };
 }
