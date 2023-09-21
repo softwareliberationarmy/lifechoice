@@ -1,8 +1,33 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { WeighInList } from './WeighInList';
+import { WeighIn } from '../../app/model/WeighIn';
+
+const givenWeighIns: WeighIn[] = [];
+
+vi.mock('../../app/store/store', () => {
+  return {
+    useStore: () => ({
+      weighInStore: {
+        weighIns: givenWeighIns,
+      },
+    }),
+  };
+});
 
 describe('when I render the weigh in list', () => {
+  beforeEach(() => {
+    givenWeighIns.length = 0;
+  });
+
+  const givenTheseWeighIns = (weighIns: WeighIn[]) => {
+    givenWeighIns.push(...weighIns);
+  };
+
+  const whenIRenderAWeighInList = () => {
+    render(<WeighInList />);
+  };
+
   it('shows the weigh-ins passed in', () => {
     const expectedWeighIns = [
       {
@@ -18,7 +43,9 @@ describe('when I render the weigh in list', () => {
       },
     ];
 
-    render(<WeighInList weighIns={expectedWeighIns} />);
+    givenTheseWeighIns(expectedWeighIns);
+    whenIRenderAWeighInList();
+
     const expectedMetrics = [
       { key: 'pounds', value: '223.6' },
       { key: 'BMI', value: '30' },
@@ -81,7 +108,9 @@ describe('when I render the weigh in list', () => {
         visceralFat: 14,
       },
     ];
-    render(<WeighInList weighIns={threeUnorderedWeighIns} />);
+
+    givenTheseWeighIns(threeUnorderedWeighIns);
+    whenIRenderAWeighInList();
     const weighIns = screen.getAllByTestId('weigh-in');
 
     expect(weighIns.length).toBe(3);

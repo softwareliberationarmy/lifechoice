@@ -4,9 +4,11 @@ import { WeighInList } from '../../features/weigh-ins/WeighInList';
 import { Container } from 'semantic-ui-react';
 import { WeighIn } from '../model/WeighIn';
 import { WeighInModal } from '../../features/weigh-ins/WeighInModal';
-import agent from '../api/agent';
+import { useStore } from '../store/store';
 
 function App() {
+
+  const { weighInStore } = useStore();
   const [weighIns, setWeighIns] = useState<WeighIn[]>([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -24,7 +26,8 @@ function App() {
   }
 
   useEffect(() => {
-    agent.WeighIns.getAll().then((weighIns) => setWeighIns(weighIns));
+    weighInStore.loadWeighIns();
+    // agent.WeighIns.getAll().then((weighIns) => setWeighIns(weighIns));
   }, []);
 
   return (
@@ -36,7 +39,7 @@ function App() {
       />
       <NavBar onCreateNew={requestNewWeighIn} />
       <Container style={{ marginTop: '7em' }}>
-        <WeighInList weighIns={weighIns} />
+        <WeighInList />
       </Container>
     </>
   );

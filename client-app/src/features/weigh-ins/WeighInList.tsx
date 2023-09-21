@@ -1,15 +1,16 @@
 import { Item, Segment, Statistic } from 'semantic-ui-react';
 import { WeighIn } from '../../app/model/WeighIn';
+import { useStore } from '../../app/store/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-  weighIns: WeighIn[];
-}
+export const WeighInList = observer(() => {
+  const { weighInStore } = useStore();
+  const { weighIns } = weighInStore;
 
-export const WeighInList = ({ weighIns }: Props) => {
   return (
     <Segment raised data-testid="weigh-ins">
       <Item.Group divided>
-        {weighIns
+        {weighIns.slice()
           .sort((a, b) => (a.date > b.date ? -1 : 1))
           .map((wi: WeighIn) => (
             <Item key={wi.id} data-testid="weigh-in">
@@ -63,4 +64,4 @@ export const WeighInList = ({ weighIns }: Props) => {
       </Item.Group>
     </Segment>
   );
-};
+});
