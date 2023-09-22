@@ -4,45 +4,38 @@ import WeighInModal from './WeighInModal';
 import { WeighIn } from '../../app/model/WeighIn';
 import userEvent from '@testing-library/user-event';
 import { Store, useStore as storeHook } from '../../app/store/store';
-import WeighInStore from '../../app/store/weighInStore';
 
 const useStore = storeHook as ReturnType<typeof vi.fn>;
 vi.mock('../../app/store/store');
 
 interface ModalTestInputs {
   shouldOpen?: boolean;
-  cancelAction?: () => void;
-  submitAction?: (wi: WeighIn) => void;
 }
 
-const stubWeighInStore = () => {
+const stubWeighInStore = (initialState: boolean) => {
   const store: Store = {
-    weighInStore: new WeighInStore(),
+    weighInStore: {
+      createMode: initialState,
+      weighIns: [],
+      setCreateMode: vi.fn(),
+      addWeighIn: vi.fn(),
+      loadWeighIns: vi.fn(),
+    },
   };
 
   return store;
 };
 
-const whenIRenderTheWeighInModal = ({
-  shouldOpen,
-  cancelAction,
-  submitAction,
-}: ModalTestInputs) => {
-  const store = stubWeighInStore();
-  store.weighInStore.setCreateMode(shouldOpen ?? true);
+const whenIRenderTheWeighInModal = ({ shouldOpen }: ModalTestInputs) => {
+  const store = stubWeighInStore(shouldOpen ?? true);
   useStore.mockReturnValue(store);
 
-  render(
-    <WeighInModal
-      onCancel={cancelAction ?? vi.fn()}
-      onSubmit={submitAction ?? vi.fn()}
-    />
-  );
+  render(<WeighInModal />);
+
+  return store;
 };
 
 describe('WeighInModal: modal for creating a new weigh-in', () => {
-  beforeEach(() => {});
-
   describe('when weigh-in modal is created', () => {
     it('should be closed by default', () => {
       whenIRenderTheWeighInModal({ shouldOpen: false });
@@ -97,26 +90,24 @@ describe('WeighInModal: modal for creating a new weigh-in', () => {
   });
 
   describe('when weigh-in modal is set as open with actions', () => {
-    it('should trigger cancel action when cancel button clicked', async () => {
-      const cancelAction = vi.fn();
-      whenIRenderTheWeighInModal({ cancelAction });
+    it('should set create mode when cancel button clicked', async () => {
+      const store = whenIRenderTheWeighInModal({});
 
       await waitFor(() => {
         screen.getByText('Cancel').click();
       });
 
-      expect(cancelAction).toHaveBeenCalledOnce();
+      expect(store.weighInStore.setCreateMode).toHaveBeenCalledWith(false);
     });
 
-    it('should trigger submit action when submit button clicked', async () => {
-      const submitAction = vi.fn();
-      whenIRenderTheWeighInModal({ submitAction });
+    it('should add the weigh in when submit button clicked', async () => {
+      const store = whenIRenderTheWeighInModal({});
 
       await waitFor(() => {
         screen.getByText('Submit').click();
       });
 
-      expect(submitAction).toHaveBeenCalledOnce();
+      expect(store.weighInStore.addWeighIn).toHaveBeenCalledOnce();
     });
   });
 
@@ -124,10 +115,12 @@ describe('WeighInModal: modal for creating a new weigh-in', () => {
     let weighIn: WeighIn;
 
     beforeEach(() => {
-      const submitAction = (wi: WeighIn) => {
-        weighIn = wi;
-      };
-      whenIRenderTheWeighInModal({ submitAction });
+      const submitAction = (wi: WeighIn) =>
+        new Promise<void>(() => {
+          weighIn = wi;
+        });
+      const store = whenIRenderTheWeighInModal({});
+      store.weighInStore.addWeighIn = submitAction;
     });
 
     async function expectInputValueChangeToUpdateWeighIn(

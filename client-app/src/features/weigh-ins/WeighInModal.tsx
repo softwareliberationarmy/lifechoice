@@ -4,14 +4,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useStore } from '../../app/store/store';
 import { observer } from 'mobx-react-lite';
 
-interface Props {
-  onCancel: () => void;
-  onSubmit: (wi: WeighIn) => void;
-}
-
-const WeighInModal = ({ onCancel, onSubmit }: Props) => {
+const WeighInModal = () => {
   const { weighInStore } = useStore();
-  const { createMode } = weighInStore;
+  const { createMode, setCreateMode, addWeighIn } = weighInStore;
 
   function newWeighIn(): WeighIn {
     return {
@@ -115,10 +110,10 @@ const WeighInModal = ({ onCancel, onSubmit }: Props) => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="black" onClick={onCancel}>
+        <Button color="black" onClick={() => setCreateMode(false)}>
           Cancel
         </Button>
-        <Button positive onClick={() => onSubmit(weighIn)}>
+        <Button positive onClick={() => addWeighIn(weighIn)}>
           Submit
         </Button>
       </Modal.Actions>
