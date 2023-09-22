@@ -10,10 +10,6 @@ import { observer } from 'mobx-react-lite';
 function App() {
   const { weighInStore } = useStore();
 
-  function requestNewWeighIn() {
-    weighInStore.setCreateMode(true);
-  }
-
   function cancelNewWeighIn() {
     weighInStore.setCreateMode(false);
   }
@@ -29,7 +25,7 @@ function App() {
   return (
     <>
       <WeighInModal onCancel={cancelNewWeighIn} onSubmit={createNewWeighIn} />
-      <NavBar onCreateNew={requestNewWeighIn} />
+      <NavBar />
       <Container style={{ marginTop: '7em' }}>
         <WeighInList />
       </Container>

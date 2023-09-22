@@ -1,10 +1,11 @@
 import { Button, Menu } from 'semantic-ui-react';
+import { useStore } from '../store/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-  onCreateNew: () => void;
-}
+export const NavBar = observer(() => {
+  const { weighInStore } = useStore();
+  const { setCreateMode } = weighInStore;
 
-export const NavBar = ({ onCreateNew }: Props) => {
   return (
     <Menu inverted as="nav" fixed="top">
       <Menu.Item
@@ -14,8 +15,12 @@ export const NavBar = ({ onCreateNew }: Props) => {
         header
       ></Menu.Item>
       <Menu.Item>
-        <Button positive content="Create Weigh In" onClick={onCreateNew} />
+        <Button
+          positive
+          content="Create Weigh In"
+          onClick={() => setCreateMode(true)}
+        />
       </Menu.Item>
     </Menu>
   );
-};
+});
