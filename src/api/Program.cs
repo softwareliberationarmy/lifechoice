@@ -1,7 +1,4 @@
 using Application.Configuration;
-using Application.Core;
-using Application.WeighIn;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Persistence.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);

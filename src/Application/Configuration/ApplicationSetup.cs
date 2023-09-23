@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Application.Core;
+﻿using Application.Core;
 using Application.WeighIn;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

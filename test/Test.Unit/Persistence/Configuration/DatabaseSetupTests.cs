@@ -25,7 +25,7 @@ namespace Test.Unit.Persistence.Configuration
                                               It.IsAny<EventId>(),
                                               It.Is<It.IsAnyType>((v, t) => true),
                                               It.IsAny<Exception>(),
-                                              It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), Times.Once);
+                                              It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)!), Times.Once);
         }
     }
 }

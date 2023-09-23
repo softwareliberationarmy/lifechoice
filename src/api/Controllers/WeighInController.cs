@@ -1,7 +1,5 @@
 ﻿using Application.WeighIn;
 using Domain;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
