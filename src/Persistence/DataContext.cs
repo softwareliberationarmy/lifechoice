@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 
+[assembly:CLSCompliant(false)]
 namespace Persistence
 {
     public class DataContext: DbContext

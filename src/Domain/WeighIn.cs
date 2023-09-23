@@ -1,4 +1,5 @@
-﻿namespace Domain
+﻿[assembly:CLSCompliant(true)]
+namespace Domain
 { 
     public class WeighIn
     {
