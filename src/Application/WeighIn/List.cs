@@ -4,7 +4,7 @@ using Persistence;
 
 namespace Application.WeighIn
 {
-    public class List
+    public static class List
     {
         public class Query : IRequest<List<Domain.WeighIn>>
         {
@@ -22,7 +22,7 @@ namespace Application.WeighIn
 
             public async Task<List<Domain.WeighIn>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.WeighIns.ToListAsync(cancellationToken);
+                return await _context.WeighIns.ToListAsync(cancellationToken).ConfigureAwait(false);
             }
         }
     }

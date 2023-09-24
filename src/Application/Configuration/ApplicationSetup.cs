@@ -3,7 +3,7 @@ using Application.WeighIn;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly:CLSCompliant(true)]
+[assembly:CLSCompliant(false)]
 namespace Application.Configuration
 {
     public static class ApplicationSetup

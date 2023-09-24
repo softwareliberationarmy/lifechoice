@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Logging;
 
 namespace Persistence.Configuration
 {
@@ -12,13 +13,14 @@ namespace Persistence.Configuration
             try
             {
                 var context = services.GetRequiredService<DataContext>();
-                await context.Database.MigrateAsync();
-                await Seed.SeedData(context);
+                await context.Database.MigrateAsync().ConfigureAwait(false);
+                await Seed.SeedData(context).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger<DataContext>>();
-                logger.LogError(ex, "Error applying migrations to database");
+                logger.LogMigrationFailure(ex);
+                throw;
             }
 
         }

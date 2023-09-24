@@ -3,9 +3,9 @@ using Persistence;
 
 namespace Application.WeighIn;
 
-public class Create
+public static class Create
 {
-    public class Command: IRequest
+    public class Command : IRequest
     {
         public Domain.WeighIn WeighIn { get; }
 
@@ -26,8 +26,11 @@ public class Create
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            _context.WeighIns.Add(request.WeighIn);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (request != null)
+            {
+                _context.WeighIns.Add(request.WeighIn);
+                await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

@@ -4,9 +4,9 @@ using Persistence;
 
 namespace Application.WeighIn;
 
-public class Edit
+public static class Edit
 {
-    public class Command: IRequest
+    public class Command : IRequest
     {
         public Domain.WeighIn WeighIn { get; }
 
@@ -29,9 +29,13 @@ public class Edit
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var weighIn = await _context.WeighIns.FindAsync(request.WeighIn.Id);
-            _mapper.Map(request.WeighIn, weighIn);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (request != null)
+            {
+                var weighIn = await _context.WeighIns.FindAsync(new object[] { request.WeighIn.Id },
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                _mapper.Map(request.WeighIn, weighIn);
+                await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

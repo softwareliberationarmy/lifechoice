@@ -3,9 +3,9 @@ using Persistence;
 
 namespace Application.WeighIn;
 
-public class Delete
+public static class Delete
 {
-    public class Command: IRequest
+    public class Command : IRequest
     {
         public int Id { get; }
 
@@ -15,7 +15,7 @@ public class Delete
         }
     }
 
-    public class Handler: IRequestHandler<Command>
+    public class Handler : IRequestHandler<Command>
     {
         private readonly DataContext _context;
 
@@ -26,9 +26,13 @@ public class Delete
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var weighIn = await _context.WeighIns.FindAsync(request.Id);
-            _context.Remove(weighIn);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (request != null)
+            {
+                var weighIn = await _context.WeighIns
+                    .FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken).ConfigureAwait(false);
+                _context.Remove(weighIn);
+                await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }
