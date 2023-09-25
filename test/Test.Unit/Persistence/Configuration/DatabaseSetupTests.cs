@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
 using Persistence;
@@ -16,9 +17,12 @@ namespace Test.Unit.Persistence.Configuration
 
             var sut = mocker.GetMock<IServiceProvider>();
             var logger = mocker.GetMock<ILogger<DataContext>>();
+            logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             sut.Setup(x => x.GetService(typeof(ILogger<DataContext>))).Returns(logger.Object);
 
-            await sut.Object.UpdateDatabase();
+
+            Func<Task> act = () => sut.Object.UpdateDatabase();
+            await act.Should().ThrowAsync<Exception>();
 
             logger.Verify(x => x.Log(
                                LogLevel.Error,
