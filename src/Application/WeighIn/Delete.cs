@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using Persistence;
+
 
 namespace Application.WeighIn;
 

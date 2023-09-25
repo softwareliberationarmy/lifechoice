@@ -1,6 +1,8 @@
 using Application.Configuration;
 using Persistence.Configuration;
 
+[assembly:CLSCompliant(false)]
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -36,6 +38,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
-await scope.ServiceProvider.UpdateDatabase();
+await scope.ServiceProvider.UpdateDatabase().ConfigureAwait(false);
 
-app.Run();
+await app.RunAsync().ConfigureAwait(false);

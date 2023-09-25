@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Persistence.Configuration;
 
 namespace Persistence.Logging;
 

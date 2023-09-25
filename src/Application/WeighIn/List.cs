@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -6,6 +7,7 @@ namespace Application.WeighIn
 {
     public static class List
     {
+        [SuppressMessage("Naming", "CA1724: Type names should not match namespaces", Justification = "This is a nested class, and Query is a well-known MediatR keyword")]
         public class Query : IRequest<List<Domain.WeighIn>>
         {
 
