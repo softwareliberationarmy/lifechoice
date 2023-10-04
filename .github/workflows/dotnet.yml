@@ -27,7 +27,7 @@ jobs:
     - name: .NET Test
       run: dotnet test --no-build --verbosity normal
     - name: Change to client-app folder
-      run: cd ..\client-app
+      run: cd client-app
     - name: React Restore
       run: npm install
     - name: React Build
