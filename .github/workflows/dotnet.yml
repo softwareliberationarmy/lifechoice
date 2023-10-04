@@ -8,10 +8,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
-
+  dotnet-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +20,19 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
+    - name: .NET Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: .NET Build
       run: dotnet build --no-restore
-    - name: Test
+    - name: .NET Test
       run: dotnet test --no-build --verbosity normal
+    - name: Change to client-app folder
+      run: cd ..\client-app
+    - name: React Restore
+      run: npm install
+    - name: React Build
+      run: npm run build
+    - name: React Test
+      run: npm test run -- --coverage
+      
+  
